@@ -4,6 +4,10 @@ const listener = express();
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 
+//CORS
+const cors = require("cors");
+listener.use(cors);
+
 //Configuration and mailer constants
 const config = require("../config/config");
 const mailSend = require("./mail/mailhandler");
