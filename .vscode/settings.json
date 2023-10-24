@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/4cd4f104-d5ca-49ee-b52c-00a4ce80d3ca/resourceGroups/Siti/providers/Microsoft.Web/sites/personal-webiste-apis",
+    "appService.deploySubpath": "."
+}
