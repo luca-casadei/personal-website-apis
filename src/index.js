@@ -1,12 +1,11 @@
 //Express constants
 const express = require("express");
 const listener = express();
-const bodyParser = require("body-parser");
-const jsonParser = bodyParser.json();
+const jsonParser = express.json();
 
 //CORS
 const cors = require("cors");
-listener.use(cors);
+listener.use(cors());
 
 //Configuration and mailer constants
 const config = require("../config/config");
@@ -16,11 +15,17 @@ listener.post("/send", jsonParser, (request, response) => {
   const mailOptions = {
     sender: config.mail.sender,
     recipient: config.mail.recipient,
-    text: request.body.text,
     subject: request.body.subject,
+    options:{
+      text: request.body.text,
+      name: request.body.name,
+      surname: request.body.surname,
+      email: request.body.email,
+      company: request.body.company
+    }
   };
   mailSend(mailOptions).then((data) =>{
-    response.send(JSON.stringify(data));
+    response.send(data);
   });
 });
 
