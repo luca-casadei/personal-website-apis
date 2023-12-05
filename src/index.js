@@ -11,6 +11,12 @@ listener.use(cors());
 const config = require("../config/config");
 const mailSend = require("./mail/mailhandler");
 
+//Downloads my publicly shared CV
+listener.get("/getcv", (request,response) => {
+  const filePath = config.resourcepath + "CVLucaCasadeiCert.pdf"
+  response.download(filePath)
+})
+
 listener.post("/send", jsonParser, (request, response) => {
   const mailOptions = {
     sender: config.mail.sender,

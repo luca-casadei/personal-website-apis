@@ -1,6 +1,5 @@
 const resend = require("resend");
 const config = require("../../config/config");
-const { text } = require("express");
 const msender = new resend.Resend(config.mail.api_key);
 
 async function mailSend({ sender, recipient, subject, options }) {
