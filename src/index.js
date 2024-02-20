@@ -9,7 +9,7 @@ const https = require("https");
 
 //Certificate loading
 const privateKey = fs.readFileSync(
-  config.certpath + "privkey1.key",
+  config.certpath + "privkey1.pem",
   "utf-8"
 );
 const certificate = fs.readFileSync(
@@ -22,8 +22,7 @@ const express = require("express");
 const jsonParser = express.json();
 const app = express();
 
-/*CORS
-const cors = require("cors");
+/*const cors = require("cors");
 app.use(cors);*/
 
 //Listener defining
