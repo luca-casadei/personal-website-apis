@@ -132,3 +132,4 @@ dist
 
 # Resources that do not belong in a repository
 public/resources
+public/certificates

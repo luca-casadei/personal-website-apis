@@ -1,47 +1,89 @@
-//Express constants
-const express = require("express");
-const listener = express();
-const jsonParser = express.json();
-
-//CORS
-const cors = require("cors");
-listener.use(cors());
-
 //Configuration and mailer constants
 const config = require("../config/config");
 const mailSend = require("./mail/mailhandler");
 
-//Downloads my publicly shared CV
-listener.get("/getcv", (request,response) => {
-  const filePath = config.resourcepath + "CVLucaCasadeiCert.pdf"
-  response.download(filePath)
-})
+//File Readers
+const fs = require("fs");
+const http = require("http");
+const https = require("https");
 
-listener.post("/send", jsonParser, (request, response) => {
+//Certificate loading
+const privateKey = fs.readFileSync(
+  config.certpath + "privkey1.key",
+  "utf-8"
+);
+const certificate = fs.readFileSync(
+  config.certpath + "fullchain1.pem",
+  "utf-8"
+);
+
+//Express constants
+const express = require("express");
+const jsonParser = express.json();
+const app = express();
+
+/*CORS
+const cors = require("cors");
+app.use(cors);*/
+
+//Listener defining
+const fallbackPort = 3000;
+const fallbackSecurePort = 3443;
+const httpListener = http.createServer(app);
+const httpsListener = https.createServer(
+  { key: privateKey, cert: certificate },
+  app
+);
+
+//Downloads my publicly shared CV
+app.get("/getcv", (request, response) => {
+  const filePath = config.resourcepath + "CVLucaCasadeiCert.pdf";
+  response.download(filePath);
+});
+
+app.post("/send", jsonParser, (request, response) => {
   const mailOptions = {
     sender: config.mail.sender,
     recipient: config.mail.recipient,
     subject: request.body.subject,
-    options:{
+    options: {
       text: request.body.text,
       name: request.body.name,
       surname: request.body.surname,
       email: request.body.email,
-      company: request.body.company
-    }
+      company: request.body.company,
+    },
   };
-  mailSend(mailOptions).then((data) =>{
+  mailSend(mailOptions).then((data) => {
     response.send(data);
   });
 });
 
 //Setting GET routes
-listener.get("*", (request, response) => {
+app.get("*", (request, response) => {
   response.redirect(302, "https://www.lucacasadei.net");
 });
 
 //Listener activation
-const portNumber = config.port || 3000;
-listener.listen(portNumber, () => {
-  console.log("Now listening on port: " + portNumber);
+if (!config.port) {
+  console.log(
+    "Warning, no port is defined in the HTTP environment, using fallback: " +
+      fallbackPort
+  );
+}
+if (!config.secureport) {
+  console.log(
+    "Warning, no HTTPS port specified, using fallback" + fallbackSecurePort
+  );
+}
+
+//Ports loading
+const portNumber = config.port || fallbackPort;
+const securePortNumber = config.secureport || fallbackPort;
+
+httpsListener.listen(securePortNumber, () => {
+  console.log("HTTPS Listener started and working.");
+});
+httpListener.listen(portNumber, () => {
+  console.log("HTTP Listener started and working.");
 });
