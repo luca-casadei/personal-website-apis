@@ -22,8 +22,8 @@ const express = require("express");
 const jsonParser = express.json();
 const app = express();
 
-/*const cors = require("cors");
-app.use(cors);*/
+const cors = require("cors");
+app.use(cors({origin : "https://www.lucacasadei.net"}));
 
 //Listener defining
 const fallbackPort = 3000;
