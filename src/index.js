@@ -60,9 +60,6 @@ app.post("/send", jsonParser, (request, response) => {
 
 //Online checker
 app.get("/ison",(request,response)=>{
-  response.header(
-    "Access-Control-Allow-Origin", "*"
-  )
   response.json({
     "online" : "true",
   })
