@@ -9,11 +9,11 @@ const https = require("https");
 
 //Certificate loading
 const privateKey = fs.readFileSync(
-  config.certpath + "privkey1.pem",
+  config.certpath + "casadeiddnsnet.key",
   "utf-8"
 );
 const certificate = fs.readFileSync(
-  config.certpath + "fullchain1.pem",
+  config.certpath + "casadei_ddns_net.pem",
   "utf-8"
 );
 
@@ -57,6 +57,16 @@ app.post("/send", jsonParser, (request, response) => {
     response.send(data);
   });
 });
+
+//Online checker
+app.get("/ison",(request,response)=>{
+  response.header(
+    "Access-Control-Allow-Origin", "*"
+  )
+  response.json({
+    "online" : "true",
+  })
+})
 
 //Setting GET routes
 app.get("*", (request, response) => {
