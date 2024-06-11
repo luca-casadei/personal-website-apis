@@ -9,7 +9,7 @@ const configOptions = {
     api_key: process.env.MAIL_API_KEY,
   },
   resourcepath: `${__dirname}/../public/resources/`,
-  certpath: `${__dirname}/../public/certificates/`,
+  certpath: `${__dirname}/../certificates/`,
 };
 
 module.exports = configOptions;

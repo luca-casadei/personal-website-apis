@@ -131,5 +131,5 @@ dist
 .pnp.*
 
 # Resources that do not belong in a repository
-public/resources
-public/certificates
+public/resources/*
+certificates/*

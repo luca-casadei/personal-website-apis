@@ -1,6 +1,5 @@
 //Configuration and mailer constants
 const config = require("../config/config");
-const mailSend = require("./mail/mailhandler");
 
 //File Readers
 const fs = require("fs");
@@ -38,24 +37,6 @@ const httpsListener = https.createServer(
 app.get("/getcv", (request, response) => {
   const filePath = config.resourcepath + "CVLucaCasadeiCert.pdf";
   response.download(filePath);
-});
-
-app.post("/send", jsonParser, (request, response) => {
-  const mailOptions = {
-    sender: config.mail.sender,
-    recipient: config.mail.recipient,
-    subject: request.body.subject,
-    options: {
-      text: request.body.text,
-      name: request.body.name,
-      surname: request.body.surname,
-      email: request.body.email,
-      company: request.body.company,
-    },
-  };
-  mailSend(mailOptions).then((data) => {
-    response.send(data);
-  });
 });
 
 //Online checker
